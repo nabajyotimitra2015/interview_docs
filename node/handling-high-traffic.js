@@ -1,6 +1,5 @@
 /*
 1. Check blocking/synchronous code
-
 Avoid CPU-heavy or synchronous operations inside the request path.
 ❌
 */
