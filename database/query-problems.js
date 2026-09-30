@@ -92,4 +92,51 @@ FROM (
 WHERE rn > 1;
 
 //------------------------------------------\\
+
+C. Find the third-highest distinct salary.
+
+Approach 1 — DENSE_RANK() ⭐ Recommended
+
+SELECT salary
+FROM (
+    SELECT salary,
+           DENSE_RANK() OVER (ORDER BY salary DESC) AS rank
+    FROM employees
+) t
+WHERE rank = 3;
+
+Approach 2 — DISTINCT + OFFSET
+
+SELECT DISTINCT salary
+FROM employees
+WHERE salary IS NOT NULL
+ORDER BY salary DESC
+OFFSET 2
+LIMIT 1;
+
+Approach 3 — Subquery
+
+SELECT MAX(salary) AS third_highest_salary
+FROM employees
+WHERE salary < (
+    SELECT MAX(salary)
+    FROM employees
+    WHERE salary < (
+        SELECT MAX(salary)
+        FROM employees
+    )
+);
+//------------------------------------------\\
+
+D. Find employees whose salary is greater than the average salary.
+
+SELECT *
+FROM employees
+WHERE salary > (
+    SELECT AVG(salary)
+    FROM employees
+);
+//------------------------------------------\\
+
+
 */
